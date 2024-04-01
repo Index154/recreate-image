@@ -12,7 +12,7 @@ Disclaimer: The script can obviously only work with images that still have their
 
 # Functionality summary
 - Allows uploading / dragging a single image into the UI
-- Also supports batch input from a folder
+- Also supports batch input from a folder. In this mode the generated images will retain the same filenames as the inputs
 - You can select which parameters of the original image should be kept the same from the following options:
   - Positive prompt
   - Negative prompt
