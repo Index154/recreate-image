@@ -135,7 +135,6 @@ class Script(scripts.Script):
         pattern = r'!.*?=>.*?!'
         replaces = re.findall(pattern, p.prompt)
         p.prompt = re.sub(pattern, '', p.prompt)
-        separator = os.path.join('a', 'a')[1:2]
         
         # Batch process from folder
         batch_results = None
