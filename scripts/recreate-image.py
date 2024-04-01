@@ -77,18 +77,18 @@ class Script(scripts.Script):
                 
             if(uiModelErr and details[5][7:] != checkpointName):
                 if uiConditionalControlNetAssist : condControlNetAssist = True
-                if (uiEnableBatch and uiSkipBatchErr) or uiConditionalControlNetAssist : return None
-                raise Exception('The original model for this image is: ' + details[5][7:])
+                if (uiEnableBatch and uiSkipBatchErr) and not uiConditionalControlNetAssist : return None
+                if not uiConditionalControlNetAssist : raise Exception('The original model for this image is: ' + details[5][7:])
                 
-            if(uiControlNetErr and ', ControlNet' in genInfo[2] and not uiControlNetAssist):
+            if(uiControlNetErr and ', ControlNet' in genInfo[2]):
                 if uiConditionalControlNetAssist : condControlNetAssist = True
-                if (uiEnableBatch and uiSkipBatchErr) or uiConditionalControlNetAssist : return None
-                raise Exception('The original image was generated with the assistance of ControlNet')
+                if (uiEnableBatch and uiSkipBatchErr) and not uiConditionalControlNetAssist : return None
+                if not uiConditionalControlNetAssist : raise Exception('The original image was generated with the assistance of ControlNet')
                 
             if(uiFabricErr and ', fabric_start:' in genInfo[2]):
                 if uiConditionalControlNetAssist : condControlNetAssist = True
-                if (uiEnableBatch and uiSkipBatchErr) or uiConditionalControlNetAssist : return None
-                raise Exception('The original image was generated with the assistance of FABRIC')
+                if (uiEnableBatch and uiSkipBatchErr) and not uiConditionalControlNetAssist : return None
+                if not uiConditionalControlNetAssist : raise Exception('The original image was generated with the assistance of FABRIC')
             
             # Hook ControlNet if enabled
             if uiControlNetAssist or condControlNetAssist:
@@ -107,11 +107,12 @@ class Script(scripts.Script):
                 model = controlNetList[0].model
                 if ', ControlNet' in genInfo[2]:
                     controlNetDetails = genInfo[2].split(', ControlNet')[1]
-                    weight = controlNetDetails.split(', Weight: ')[1].split(',')[0]
-                    pixel_perfect = controlNetDetails.split(', Pixel Perfect: ')[1].split(',')[0]
-                    guidance_start = controlNetDetails.split(', Guidance Start: ')[1].split(',')[0]
-                    guidance_end = controlNetDetails.split(', Guidance End: ')[1].split(',')[0]
-                    module = controlNetDetails.split(', Module: ')[1].split(',')[0]
+                    weight = float(controlNetDetails.split(', Weight: ')[1].split(',')[0])
+                    if controlNetDetails.split(', Pixel Perfect: ')[1].split(',')[0] == 'True' : pixel_perfect = True
+                    else : pixel_perfect = False
+                    guidance_start = float(controlNetDetails.split(', Guidance Start: ')[1].split(',')[0])
+                    guidance_end = float(controlNetDetails.split(', Guidance End: ')[1].split(',')[0])
+                    module = controlNetDetails.split('Module: ')[1].split(',')[0]
                     model = controlNetDetails.split(', Model: ')[1].split(',')[0]
                 
                 controlNetList[0].image = imgData
@@ -134,6 +135,9 @@ class Script(scripts.Script):
         import re
         pattern = r'!.*?=>.*?!'
         replaces = re.findall(pattern, p.prompt)
+        p.prompt = re.sub(pattern, '', p.prompt)
+        # Remove other syntax
+        pattern = r'!.*?=.*?!'
         p.prompt = re.sub(pattern, '', p.prompt)
         
         # Batch process from folder
