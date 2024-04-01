@@ -1,9 +1,17 @@
 # Recreate Image
-A custom script for Stable Diffusion WebUI for recreating images with the same or slightly modified parameters. I've been using this for recreations of images in different styles as well as touchups with ADetailer in img2img (with the Skip img2img setting enabled). The PNG info function of the regular img2img batch mode was causing issues for me so I decided to make something like this.
+A custom script for Stable Diffusion WebUI for recreating images with the same or slightly modified parameters. It works by automatically using the parameters found in an image's metadata. I've been using this for recreations of images in different styles as well as touchups with ADetailer in img2img (with the Skip img2img setting enabled). The PNG info function of the regular img2img batch mode was causing issues for me so I decided to make something like this.
 
 Disclaimer: The script can obviously only work with images that still have their original generation metadata. If this information is missing or false then you will not get the same results. Additional extensions and features like ControlNet, FABRIC, ADetailer and such are also hard to replicate and may cause inconsistencies.
 
-# Short summary
+## Installation & usage
+1. Install the [ControlNet extension](https://github.com/Mikubill/sd-webui-controlnet)
+2. In the WebUI navigate to: Extensions -> Install from URL
+4. Paste this link into the "URL for extension's git repository" box: https://github.com/Index154/recreate-image
+5. Click on Install and wait for it to finish installing
+6. Select the "Installed" tab and click on "Apply and restart UI"
+7. To use it select it in the Scripts dropdown of the txt2img or img2img tab, configure the settings, then upload an image or activate batch mode and enter an input folder path. When you start a generation it will run
+
+# Functionality summary
 - Allows uploading / dragging a single image into the UI
 - Also supports batch input from a folder
 - You can select which parameters of the original image should be kept the same from the following options:
