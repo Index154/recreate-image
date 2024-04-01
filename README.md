@@ -1,7 +1,7 @@
 # Recreate Image
 A custom script for Stable Diffusion WebUI for recreating images with the same or slightly modified parameters. It works by automatically using the parameters found in an image's metadata. I've been using this for recreations of images in different styles as well as touchups with ADetailer in img2img (with the Skip img2img setting enabled). The PNG info function of the regular img2img batch mode was causing issues for me so I decided to make something like this.
 
-Disclaimer: The script can obviously only work with images that still have their original generation metadata. If this information is missing or false then you will not get the same results. Additional extensions and features like ControlNet, FABRIC, ADetailer and such are also hard to replicate and may cause inconsistencies.
+Disclaimer: The script can obviously only work with images that still have their original generation metadata. If this information is missing or false then you will not get the same results. Additional extensions and features like ControlNet, FABRIC, ADetailer and such are also hard to replicate and may cause minor or major inconsistencies.
 
 ## Installation & usage
 1. Install the [ControlNet extension](https://github.com/Mikubill/sd-webui-controlnet)
