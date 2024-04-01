@@ -10,6 +10,8 @@ import base64
 import importlib
 import modules.scripts as scripts
 import modules.shared as shared
+import modules.images as images
+from modules import script_callbacks
 from modules import images as imgutil
 from modules.processing import process_images, Processed
 from modules.shared import opts, state
@@ -38,6 +40,14 @@ class Script(scripts.Script):
 
     def run(self, p, uiImageInput, uiBatchPath, uiSamePosPrompt, uiSameNegPrompt, uiSameSeed, uiRandom, uiEnableBatch, uiSameSampling, uiModelErr, uiControlNetErr, uiFabricErr, uiSkipBatchErr, uiControlNetAssist, uiConditionalControlNetAssist):
     
+        # Callback before an image is saved - Change filename to the same as the original input image
+        targetFileName = ''
+        def on_before_image_saved(params):
+            if targetFileName != '' : params.filename = '\\'.join(params.filename.split('\\')[:-1]) + '\\' + targetFileName
+            return params
+    
+        script_callbacks.on_before_image_saved(on_before_image_saved)
+    
         # Abort if there are no active selections
         if(not uiSamePosPrompt and not uiSameNegPrompt and not uiSameSeed):
             return
@@ -46,6 +56,9 @@ class Script(scripts.Script):
             raise Exception('Missing input image or batch path in custom script')
             return
         
+        for k, v in p.override_settings.items():
+            print(str(k) + ' = ' + str(v))
+        
         # Function for replacing text in string
         def replaceText(text):
             for replace in replaces:
@@ -53,7 +66,7 @@ class Script(scripts.Script):
                     parts = replace[1:-1].split('=>')
                     text = text.replace(parts[0], '=>'.join(parts[1:]))
             return text
-            
+        
         # Function for generating an image (or batch) with the same parameters as an input image
         def recreateImg(img, p):
             p2 = copy.copy(p)
@@ -162,6 +175,7 @@ class Script(scripts.Script):
             # Loop through images
             for i, image in enumerate(images):
                 state.job = f"{i+1} out of {len(images)}"
+                targetFileName = image.split('\\')[-1]
                 
                 if state.skipped:
                     state.skipped = False
