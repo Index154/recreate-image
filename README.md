@@ -4,12 +4,11 @@ A custom script for Stable Diffusion WebUI for recreating images with the same o
 Disclaimer: The script can obviously only work with images that still have their original generation metadata. If this information is missing or false then you will not get the same results. Additional extensions and features like ControlNet, FABRIC, ADetailer and such are also hard to replicate and may cause minor or major inconsistencies.
 
 ## Installation & usage
-1. Install the [ControlNet extension](https://github.com/Mikubill/sd-webui-controlnet)
-2. In the WebUI navigate to: Extensions -> Install from URL
-4. Paste this link into the "URL for extension's git repository" box: https://github.com/Index154/recreate-image
-5. Click on Install and wait for it to finish installing
-6. Select the "Installed" tab and click on "Apply and restart UI"
-7. To use it select it in the Scripts dropdown of the txt2img or img2img tab, configure the settings, then upload an image or activate batch mode and enter an input folder path. When you start a generation it will run
+1. In the WebUI navigate to: Extensions -> Install from URL
+2. Paste this link into the "URL for extension's git repository" box: https://github.com/Index154/recreate-image
+3. Click on Install and wait for it to finish installing
+4. Select the "Installed" tab and click on "Apply and restart UI"
+5. To use it select it in the Scripts dropdown of the txt2img or img2img tab, configure the settings, then upload an image or activate batch mode and enter an input folder path. When you start a generation it will run
 
 # Functionality summary
 - Allows uploading / dragging a single image into the UI
@@ -22,8 +21,8 @@ Disclaimer: The script can obviously only work with images that still have their
 - Every other parameter will be taken from your actual UI settings
 - You can make it so the script throws an error and aborts in the following cases which may otherwise make recreation impossible:
   - The image's original model is not the same as your currently selected one
-  - The image was generated with ControlNet
-  - The image was generated with FABRIC
+  - The image was generated with [ControlNet](https://github.com/Mikubill/sd-webui-controlnet)
+  - The image was generated with [FABRIC](https://github.com/dvruette/sd-webui-fabric)
 - With batch input enabled you can also make it so the script's errors don't stop the whole process but instead simply skip over any images causing them
 - You can also make the script automatically use the input image as a ControlNet input. This can be useful when recreating the image proves difficult with just the other parameters
 - Alternatively you can make ControlNet only be applied when the script would otherwise throw an error (see above for configurable error behavior). For example only if the original image was also generated using ControlNet or FABRIC
